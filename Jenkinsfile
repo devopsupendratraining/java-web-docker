@@ -40,7 +40,18 @@ pipeline{
 			}
 	}
 	  
-	  
+	stage("run docker image in container"){
+			steps{
+				def dockerRun = ' docker run  -d -p 8080:8080 --name ${BUILD_NUMBER} ragula001/javacocker:${BUILD_NUMBER}'
+				sshagent(['dockerun']) {
+					sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.66.137.177 docker stop ${BUILD_NUMBER} || true'
+					sh 'ssh  ubuntu@52.66.137.177 docker rm ${BUILD_NUMBER} || true'
+					sh 'ssh  ubuntu@52.66.137.177 docker rmi -f  $(docker images -q) || true'
+					sh "ssh  ubuntu@52.66.137.177 ${dockerRun}"
+				}
+		 
+			}
+	}
 	  
     
     
