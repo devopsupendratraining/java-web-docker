@@ -21,8 +21,16 @@ pipeline{
 			steps{
 			  sh "mvn clean package"
 			}
-	
 	}
+	  
+	  
+	  stage("docker image build"){
+			steps{
+				sh "docker build -t  ragula001/javacocker:${BUILD_NUMBER} . "
+			}
+	}
+	  
+	  
     
     
   }
